@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id    String @id @unique
+  email String @unique
+
+  username String  @unique
+  isAdmin  Boolean @default(false)
+
+  Short Short[]
+}
+
+model Short {
+  id String @id @default(cuid())
+
+  category          String
+  title             String    @unique
+  author            String
+  publishDate       DateTime?
+  content           String
+  actualContentLink String
+  imageLink         String
+  upvote            Int
+  downvote          Int
+  User              User?     @relation(fields: [userId], references: [id])
+  userId            String?
+}
